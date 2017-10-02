@@ -1,0 +1,137 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    style="@style/WizardPageContainer"
+    android:orientation="vertical">
+
+    <TextView style="@style/WizardPageTitle" />
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                style="@style/WizardFormLabel"
+                android:text="@string/sex" />
+
+            />
+
+            <RadioGroup android:id="@+id/radioGroup1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:checked="true">
+                </RadioButton>
+                <RadioButton
+                    android:id="@+id/female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                    android:checked="false"
+                    android:layout_marginLeft="20dp"
+                    >
+                </RadioButton>
+
+            </RadioGroup>
+
+
+            <TextView style="@style/WizardFormLabel"
+                android:text="@string/age" />
+
+            <EditText android:id="@+id/et_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="number"
+                android:hint="@string/age"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black_effective"/>
+
+
+            <TextView style="@style/WizardFormLabel"
+                android:text="@string/soc_level" />
+
+
+            <Spinner
+                android:id="@+id/soc_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="16dp"/>
+
+
+            <TextView style="@style/WizardFormLabel"
+                android:text="@string/educ_level" />
+
+            <Spinner
+                android:id="@+id/educ_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="16dp"/>
+
+
+            <TextView style="@style/WizardFormLabel"
+                android:text="@string/profession" />
+
+            <EditText android:id="@+id/et_profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="textCapWords"
+                android:hint="@string/profession"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black_effective"/>
+
+            <TextView style="@style/WizardFormLabel"
+                android:text="@string/region" />
+
+            <EditText android:id="@+id/et_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="textCapWords"
+                android:hint="@string/region"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black_effective"/>
+
+            <TextView style="@style/WizardFormLabel"
+                android:text="@string/locality" />
+
+            <EditText android:id="@+id/et_locality"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:inputType="textCapWords"
+                android:hint="@string/locality"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black_effective"/>
+
+
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+    </ScrollView>
+</LinearLayout>
