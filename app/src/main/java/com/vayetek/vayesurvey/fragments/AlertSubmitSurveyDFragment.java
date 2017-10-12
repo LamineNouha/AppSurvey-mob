@@ -13,6 +13,10 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.google.gson.Gson;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.vayetek.vayesurvey.R;
 import com.vayetek.vayesurvey.activities.BaseActivity;
 import com.vayetek.vayesurvey.activities.Config;
@@ -86,6 +90,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         questIdArrayList = new ArrayList<>();
         thisfragActivity = getActivity();
         surveyApiRetrofitServices = Utils.getSurveyApiRetrofitServicesInstance();
@@ -106,12 +111,12 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
                         Gson json = new Gson();
                         String citizenJson = json.toJson(citizen);
-                        Log.d("citizen from frag",citizenJson);
+                        Log.d("survey non filled: ",json.toJson(survey));
+                        Log.d("citizen filled",citizenJson);
                         storeCitizen();
 
                         String questionsJson = json.toJson(tempQuests);
-                        Log.d("questions from frag",questionsJson);
-                        storeSurvey();
+                        Log.d("questions filled",questionsJson);
 
                         //destroying the static tampon hashmap of questions-responses
                         MultipleFixedChoicePage.setTempQuests(new HashMap<String, String>());
@@ -158,8 +163,8 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                 Iterator iterator = tempQuests.entrySet().iterator();
                                 //Log.d("temppppp ",tempQuests.toString());
                                 Question[] questions =survey.getQuestions();
-                                int i=questions.length-1;
-                                while (iterator.hasNext() && i>=0) {
+
+                                for(int i = 0; i< questions.length; i++){
                                     Map.Entry mapentry = (Map.Entry) iterator.next();
 
 
@@ -182,16 +187,17 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                     }
 
 
-
-
-
-                                        com.vayetek.vayesurvey.models.Response[] responses = questions[i].getResponses();
+                                    com.vayetek.vayesurvey.models.Response[] responses = questions[i].getResponses();
 
 
                                     boolean b=(questions[i].getContent().equals(tiltle));
 
+                                    Log.d("s1",questions[i].getContent());
+                                    Log.d("s1t",tiltle);
 
-                                        if(questions[i].getContent().equals(tiltle) )
+
+
+                                        if(b )
 
                                         {
                                             for(int p=0; p<responses.length; p++)
@@ -199,7 +205,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                                 for(int o=0; o<responsestmp.length;o++)
                                                 {
                                                     if(responses[p].getChoice().equals(responsestmp[o]))
-                                                    {
+                                                    { Log.d("trueeeee","vrai");
                                                         responses[p].setChecked(true);
                                                     }
                                                 }
@@ -212,7 +218,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
 
 
-                                    i--;
+
 
                                 }
 
@@ -222,14 +228,19 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                 filledSurvey = new FilledSurvey(survey,id);
 
                                 //Log.d("***** string ques ",filledSurvey.getCitizen());
+                                JsonParser parser = new JsonParser();
 
-                                Gson json = new Gson();
-                                String qq = json.toJson(filledSurvey);
+
+                              
+                                Gson json1 = new Gson();
+                                String qq = json1.toJson(filledSurvey);
+
+                                JSONObject filedS = new JSONObject(qq);
                                 Log.d("*****model ",qq);
 
 
 
-                                Call<ResponseBody> call2 = surveyApiRetrofitServices.storeSurvey(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), filledSurvey.getTitle(),filledSurvey.getUser(), filledSurvey.getCitizen());
+                                Call<ResponseBody> call2 = surveyApiRetrofitServices.storeSurvey(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), filedS);
 
 
                                 call2.enqueue(new Callback<ResponseBody>() {
@@ -237,116 +248,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                     public void onResponse(Call<ResponseBody> call2, retrofit2.Response<ResponseBody> response2) {
 
 
-                                        if (response2.isSuccessful()) {
-                                            Log.d("saving survey success", "");
-                                            //after saving the survey now we save each question
-                                            try {
 
-                                                JSONObject jsonObject2 = new JSONObject(response2.body().string());
-                                                String ids = jsonObject2.getString("_id");
-
-//                                                ArrayList<String> ar= saveQuestions(filledSurvey,ids);
-
-                                                final Question[] fquestions = filledSurvey.getQuestions();
-                                                int d;
-                                                for(d = 0; d<fquestions.length; d++) {
-                                                    final int t=d;
-                                                    Log.d("saving question n° ", String.valueOf(d + 1));
-
-
-                                                    //we have to change survey id for each question because we have created a new FilledSurvey not Survey
-                                                    fquestions[d].setSurvey(ids);
-
-
-                                                    Call<ResponseBody> call3 = surveyApiRetrofitServices.storeQuestion(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), fquestions[d].getContent(), fquestions[d].getSurvey());
-
-                                                    call3.enqueue(new Callback<ResponseBody>() {
-                                                        @Override
-                                                        public void onResponse(Call<ResponseBody> call3, retrofit2.Response<ResponseBody> response3) {
-
-
-                                                            if (response3.isSuccessful()) {
-
-                                                                //after saving each question now we save each response of saved question
-                                                                try {
-
-                                                                    JSONObject jsonObject3 = new JSONObject(response3.body().string());
-                                                                    String idq = jsonObject3.getString("_id");
-                                                                    questIdArrayList.add(idq);
-
-
-                                                                     Response[] fresponses = fquestions[t].getResponses();
-
-
-                                                                    Log.d("fresponses ", fresponses.toString());
-
-
-                                                                    for (int y = 0; y < fresponses.length; y++) {
-                                                                        Log.d("saving response n° ", String.valueOf(y + 1));
-                                                                        //we have to change question id for each response because we have created a new question
-                                                                        fresponses[y].setQuestion(idq);
-
-
-                                                                        int myInt = (fresponses[y].isChecked()) ? 1 : 0;
-
-
-                                                                        Call<ResponseBody> call4 = surveyApiRetrofitServices.storeResponse(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), fresponses[y].getChoice(), myInt, fresponses[y].getQuestion());
-
-                                                                        call4.enqueue(new Callback<ResponseBody>() {
-                                                                            @Override
-                                                                            public void onResponse(Call<ResponseBody> call4, retrofit2.Response<ResponseBody> response4) {
-
-
-                                                                                if (response4.isSuccessful()) {
-
-                                                                                    //unuseful test but keeping it
-
-
-                                                                                    //finally :D
-
-
-                                                                                }
-                                                                            }
-
-
-                                                                            @Override
-                                                                            public void onFailure(Call<ResponseBody> call4, Throwable t4) {
-
-                                                                                Log.d("saving survey error: ", "", t4);
-                                                                            }
-                                                                        });
-
-
-                                                                    }
-
-
-                                                                } catch (JSONException | IOException | NullPointerException e3) {
-
-                                                                    e3.printStackTrace();
-                                                                }
-
-                                                            }
-                                                        }
-
-                                                        ////this is for storing survey questions
-
-
-                                                        @Override
-                                                        public void onFailure(Call<ResponseBody> call3, Throwable t3) {
-
-                                                            Log.d("saving survey error: ", "", t3);
-                                                        }
-                                                    });
-
-
-                                                }
-
-                                            } catch (JSONException | IOException | NullPointerException e2) {
-
-                                                e2.printStackTrace();
-                                            }
-
-                                        }
                                     }
 
                                         ////this is for storing survey questions
@@ -381,13 +283,4 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
     }
 
-    public void storeSurvey(){
-
-
-
-
-
-
-
-    }
 }

@@ -72,7 +72,7 @@ public class MainFragment extends Fragment {
                 myButton.setBackgroundColor(getContext().getResources().getColor(R.color.cyan_dark));
                 myButton.setId(i);
                 myButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                buttonParams.topMargin=buttonParams.topMargin+20;
+                buttonParams.topMargin=buttonParams.topMargin+40;
 
 
 

@@ -8,9 +8,12 @@ import com.vayetek.vayesurvey.models.Question;
 import com.vayetek.vayesurvey.models.Response;
 import com.vayetek.vayesurvey.models.Survey;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -37,7 +40,7 @@ public interface SurveyApiRetrofitServices {
         Call<ResponseBody> signin(@Field("email") String login, @Field("password") String password);
 
         @GET("surveys/{userId}")
-        Call<ArrayList<Survey>> getListSurveys(@Header("Authorization") String authorization, @Path("userId") String sessionId);
+        Call<ArrayList<Survey>> getListSurveys(@Header("Authorization") String authorization, @Path("userId") String userId);
 
         @FormUrlEncoded
         @POST("citizens")
@@ -47,7 +50,7 @@ public interface SurveyApiRetrofitServices {
 
 
 
-        @FormUrlEncoded
+      /*  @FormUrlEncoded
         @POST("filledsurveys")
         Call<ResponseBody> storeSurvey(@Header("Authorization") String authorization, @Field("title")String title, @Field("user") String user, @Field("citizen") String citizen);
 
@@ -59,7 +62,15 @@ public interface SurveyApiRetrofitServices {
 
         @FormUrlEncoded
         @POST("responses")
-        Call<ResponseBody> storeResponse(@Header("Authorization") String authorization, @Field("choice")String choice, @Field("checked")int checked, @Field("question")String question);
+        Call<ResponseBody> storeResponse(@Header("Authorization") String authorization, @Field("choice")String choice, @Field("checked")boolean checked, @Field("question")String question);
+
+*/
+
+
+        @POST("filledsurveys")
+        Call<ResponseBody> storeSurvey(@Header("Authorization") String authorization, @Body JSONObject body);
+
+
 
 
 

@@ -99,6 +99,8 @@ public class MainActivity extends BaseActivity {
         //playing the man fragment
 
         showLoading();
+
+        Log.d("Tokenn",Utils.getAuthorization(this.getApplicationContext()));
         Call<ArrayList<Survey>> call = surveyApiRetrofitServices.getListSurveys(Utils.getAuthorization(this.getApplicationContext()),personalUser);
         call.enqueue(new Callback<ArrayList<Survey>>(){
             @Override
@@ -107,7 +109,7 @@ public class MainActivity extends BaseActivity {
 
                 ArrayList<Survey> surveys = new ArrayList<Survey>();
 
-                surveys=response.body();
+                surveys = response.body();
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("surveylist", surveys);
 
@@ -119,21 +121,21 @@ public class MainActivity extends BaseActivity {
                                 }
 
 */
-                Log.d("kkkkkkkkkk",surveys.get(0).getTitle());
+                if (surveys.size() != 0) {
+                    //Set the fragment initially
+                    MainFragment fragment = new MainFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            getSupportFragmentManager().beginTransaction();
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.fragment_container, fragment);
+                    fragmentTransaction.commit();
 
-                //Set the fragment initially
-                MainFragment fragment = new MainFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                        getSupportFragmentManager().beginTransaction();
-                fragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.fragment_container, fragment);
-                fragmentTransaction.commit();
-
+                }
             }
-
 
             @Override
             public void onFailure(Call<ArrayList<Survey>> call, Throwable t) {
+                Log.d("error list survey",t.getMessage());
                 onError(getString(R.string.info_errLoadingSurveys));
                 hideLoading();
             }
