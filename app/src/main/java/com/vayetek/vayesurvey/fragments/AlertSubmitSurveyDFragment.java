@@ -231,7 +231,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                 JsonParser parser = new JsonParser();
 
 
-                              
+
                                 Gson json1 = new Gson();
                                 String qq = json1.toJson(filledSurvey);
 
