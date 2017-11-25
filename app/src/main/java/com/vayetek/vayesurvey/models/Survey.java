@@ -3,14 +3,19 @@ package com.vayetek.vayesurvey.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by nouha on 8/21/17.
  */
 
 public class Survey implements Parcelable {
-    private String id;
+
+
+    private String _id;
     private String title;
     private Question[] questions;
     private String user;
@@ -36,7 +41,7 @@ public class Survey implements Parcelable {
     };
 
     public void readFromParcel(Parcel in) {
-        id = in.readString();
+        _id = in.readString();
         title = in.readString();
         questions = in.createTypedArray(Question.CREATOR);
         user = in.readString();
@@ -49,21 +54,19 @@ public class Survey implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeString(_id);
         dest.writeString(title);
-        dest.writeTypedArray(questions,0);
+        dest.writeTypedArray(questions, 0);
         dest.writeString(user);
     }
 
 
-
-
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getTitle() {
@@ -91,4 +94,13 @@ public class Survey implements Parcelable {
         this.user = user;
     }
 
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "id='" + _id + '\'' +
+                ", title='" + title + '\'' +
+                ", questions=" + Arrays.toString(questions) +
+                ", user='" + user + '\'' +
+                '}';
+    }
 }

@@ -1,7 +1,6 @@
 package com.vayetek.vayesurvey.activities;
 
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,8 +39,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-
-
 public class MainActivity extends BaseActivity {
 
 
@@ -76,40 +73,33 @@ public class MainActivity extends BaseActivity {
 */
 
 
-
-
-
         //intent extras
         Bundle extras = getIntent().getExtras();
         //How to change elements in the header programatically
-
 
 
         //In onresume fetching value from sharedpreference
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         //Fetching the boolean value form sharedpreferences
-        String personalUser = sharedPreferences.getString(Config.PERSONAL_USER_SHARED_PREF,"");
-
-
-
-
+        String personalUser = sharedPreferences.getString(Config.PERSONAL_USER_SHARED_PREF, "");
 
 
         //playing the man fragment
 
         showLoading();
 
-        Log.d("Tokenn",Utils.getAuthorization(this.getApplicationContext()));
-        Call<ArrayList<Survey>> call = surveyApiRetrofitServices.getListSurveys(Utils.getAuthorization(this.getApplicationContext()),personalUser);
-        call.enqueue(new Callback<ArrayList<Survey>>(){
+        Log.d("Tokenn", Utils.getAuthorization(this.getApplicationContext()));
+        Call<ArrayList<Survey>> call = surveyApiRetrofitServices.getListSurveys(Utils.getAuthorization(this.getApplicationContext()), personalUser);
+        call.enqueue(new Callback<ArrayList<Survey>>() {
             @Override
-            public void onResponse(Call<ArrayList<Survey>> call,  Response<ArrayList<Survey>> response) {
+            public void onResponse(Call<ArrayList<Survey>> call, Response<ArrayList<Survey>> response) {
                 hideLoading();
 
                 ArrayList<Survey> surveys = new ArrayList<Survey>();
 
                 surveys = response.body();
+                Log.d("surveys", surveys.toString());
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("surveylist", surveys);
 
@@ -135,14 +125,12 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ArrayList<Survey>> call, Throwable t) {
-                Log.d("error list survey",t.getMessage());
+                Log.d("error list survey", t.getMessage());
                 onError(getString(R.string.info_errLoadingSurveys));
                 hideLoading();
             }
         });
     }
-
-
 
 
     @Override
@@ -163,7 +151,7 @@ public class MainActivity extends BaseActivity {
         if (id == R.id.nav_item_logout) {
             showLoading();
             //Getting out sharedpreferences
-            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             //Getting editor
             SharedPreferences.Editor editor = preferences.edit();
 

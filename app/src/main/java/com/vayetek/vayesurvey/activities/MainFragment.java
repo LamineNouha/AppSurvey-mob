@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        LinearLayout myLayout = (LinearLayout)rootView.findViewById(R.id.mainLayout);
+        LinearLayout myLayout = (LinearLayout) rootView.findViewById(R.id.mainLayout);
 
         myLayout.setBackgroundColor(getContext().getResources().getColor(R.color.bg_color));
         RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
@@ -57,24 +57,21 @@ public class MainFragment extends Fragment {
         buttonParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
 
-
-        mFragmentContext=MainFragment.this.getContext();
+        mFragmentContext = MainFragment.this.getContext();
         Bundle bundle = this.getArguments();
 
         if (bundle != null) {
             surveys = bundle.getParcelableArrayList("surveylist");
 
-            for (int i=0; i<surveys.size();i++){
-                Log.d("Creating Button N° ",String.valueOf(i));
+            for (int i = 0; i < surveys.size(); i++) {
+                Log.d("Creating Button N° ", String.valueOf(i));
                 final Button myButton = new Button(mFragmentContext);
-                myButton.setText( surveys.get(i).getTitle());
+                myButton.setText(surveys.get(i).getTitle());
                 myButton.setTextColor(getContext().getResources().getColor(R.color.white));
                 myButton.setBackgroundColor(getContext().getResources().getColor(R.color.cyan_dark));
                 myButton.setId(i);
                 myButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                buttonParams.topMargin=buttonParams.topMargin+40;
-
-
+                buttonParams.topMargin = buttonParams.topMargin + 40;
 
 
                 myButton.setOnClickListener(new View.OnClickListener() {
@@ -82,23 +79,16 @@ public class MainFragment extends Fragment {
 
                         intent = new Intent(getActivity(), SurveyActivity.class);
                         intent.putExtra("survey", surveys.get(myButton.getId()));
-                        Log.d("fraggggggg",surveys.get(myButton.getId()).getTitle());
+                        Log.d("fraggggggg", surveys.get(myButton.getId()).getTitle());
                         startActivity(intent);
 
 
                     }
 
                 });
-                myLayout.addView(myButton,buttonParams);
+                myLayout.addView(myButton, buttonParams);
             }
         }
-
-
-
-
-
-
-
 
 
         return rootView;
