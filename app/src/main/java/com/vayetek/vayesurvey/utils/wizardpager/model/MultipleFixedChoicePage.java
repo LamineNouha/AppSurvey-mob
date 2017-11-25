@@ -17,23 +17,25 @@
 package com.vayetek.vayesurvey.utils.wizardpager.model;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.vayetek.vayesurvey.utils.wizardpager.ui.MultipleChoiceFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * A page offering the user a number of non-mutually exclusive choices.
  */
 public class MultipleFixedChoicePage extends SingleFixedChoicePage {
-    private static HashMap<String,String> tempQuests = new HashMap<>();
+    private static LinkedHashMap<String,String> tempQuests = new LinkedHashMap<>();
 
-    public static HashMap<String, String> getTempQuests() {
+    public static LinkedHashMap<String, String> getTempQuests() {
         return tempQuests;
     }
 
-    public static void setTempQuests(HashMap<String, String> tempQuests) {
+    public static void setTempQuests(LinkedHashMap<String, String> tempQuests) {
         MultipleFixedChoicePage.tempQuests = tempQuests;
     }
 
@@ -63,6 +65,7 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
         dest.add(new ReviewItem(getTitle(), sb.toString(), getKey()));
 
         tempQuests.put(getTitle(),sb.toString());
+
     }
 
     @Override

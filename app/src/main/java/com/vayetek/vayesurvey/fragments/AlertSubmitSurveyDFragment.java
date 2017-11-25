@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -49,7 +50,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
     SurveyApiRetrofitServices surveyApiRetrofitServices;
     Citizen citizen;
-    HashMap<String, String> tempQuests;
+    LinkedHashMap<String, String> tempQuests;
     Survey survey;
     String personalId;
     FilledSurvey filledSurvey;
@@ -81,11 +82,11 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
         this.survey = survey;
     }
 
-    public HashMap<String, String> getTempQuests() {
+    public LinkedHashMap<String, String> getTempQuests() {
         return tempQuests;
     }
 
-    public void setTempQuests(HashMap<String, String> tempQuests) {
+    public void setTempQuests(LinkedHashMap<String, String> tempQuests) {
         this.tempQuests = tempQuests;
     }
 
@@ -125,7 +126,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                         Log.d("questions filled", questionsJson);
 
                         //destroying the static tampon hashmap of questions-responses
-                        MultipleFixedChoicePage.setTempQuests(new HashMap<String, String>());
+                        MultipleFixedChoicePage.setTempQuests(new LinkedHashMap<String, String>());
 
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
@@ -167,14 +168,15 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                         ////this is for storing survey questions
 
                         Iterator iterator = tempQuests.entrySet().iterator();
-                        //Log.d("temppppp ",tempQuests.toString());
+                        Log.d("temppppp filled survey ",tempQuests.toString());
                         Question[] questions = survey.getQuestions();
 
-                        for (int i = questions.length - 1; i >= 0; i--) {
+                        for (int i = 0; i < questions.length; i++) {
                             Map.Entry mapentry = (Map.Entry) iterator.next();
 
 
                             String t = (String) mapentry.getKey();
+                            Log.d("tttttt",t);
 
                             String[] ques_interog = t.split("\\?");
 

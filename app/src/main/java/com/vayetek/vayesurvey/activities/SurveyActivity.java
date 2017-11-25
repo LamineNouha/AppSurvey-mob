@@ -40,6 +40,7 @@ import org.json.JSONStringer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -47,7 +48,7 @@ public class SurveyActivity extends ActionBarActivity implements
         PageFragmentCallbacks, ReviewFragment.Callbacks, ModelCallbacks {
     Survey survey;
     Citizen citizen;
-    HashMap<String,String> tempQuests;
+    LinkedHashMap<String,String> tempQuests;
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
 
@@ -70,7 +71,7 @@ public class SurveyActivity extends ActionBarActivity implements
         setContentView(R.layout.activity_survey);
 
         citizen = new Citizen();
-        tempQuests = new HashMap<>();
+        tempQuests = new LinkedHashMap<>();
 
         Bundle extras = getIntent().getExtras();
         survey = extras.getParcelable("survey");
@@ -144,7 +145,7 @@ public class SurveyActivity extends ActionBarActivity implements
                     //in order to save questions responses
                     MultipleFixedChoicePage Qf = (MultipleFixedChoicePage)mCurrentPageSequence.get(mCurrentPageSequence.size()-1);
                     tempQuests = Qf.getTempQuests();
-
+                    Log.d("tempQuests f surveyAct",tempQuests.toString());
                     //just for logging
                     String questionsJson = json.toJson(tempQuests);
                     Log.d("questions surveyAct",questionsJson);
