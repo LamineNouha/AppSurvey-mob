@@ -33,8 +33,8 @@ import retrofit2.http.Path;
 public interface SurveyApiRetrofitServices {
 
 
-        //String ENDPOINT = "http://137.74.165.25:3003/api/";
-        String ENDPOINT = "http://192.168.43.104:3000/api/";
+        String ENDPOINT = "http://137.74.165.25:3003/api/";
+        //String ENDPOINT = "http://192.168.14.1:3000/api/";
 
         @FormUrlEncoded
         @POST("users/auth/signinPer")
