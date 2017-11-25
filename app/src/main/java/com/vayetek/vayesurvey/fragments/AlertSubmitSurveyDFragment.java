@@ -164,7 +164,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                 //Log.d("temppppp ",tempQuests.toString());
                                 Question[] questions =survey.getQuestions();
 
-                                for(int i = 0; i< questions.length; i++){
+                                for(int i = questions.length-1; i>= 0; i--){
                                     Map.Entry mapentry = (Map.Entry) iterator.next();
 
 
@@ -225,9 +225,17 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                 survey.setQuestions(questions);
 
                                 //String id = AlertSubmitSurveyDFragment.getCitizen_id();
-                                filledSurvey = new FilledSurvey(survey,id);
+                                //In onresume fetching value from sharedpreference
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-                                //Log.d("***** string ques ",filledSurvey.getCitizen());
+                                //Fetching the boolean value form sharedpreferences
+                                String surveyId =  sharedPreferences.getString(Config.SURVEY_ID_SHARED_PREF,"");
+                                String personalId = sharedPreferences.getString(Config.PERSONAL_SHARED_PREF,"");
+
+                                filledSurvey = new FilledSurvey(survey,id,surveyId,personalId);
+
+                                Log.d("zzz ",surveyId);
+                                Log.d("zz ",personalId);
                                 JsonParser parser = new JsonParser();
 
 
@@ -236,7 +244,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                                 String qq = json1.toJson(filledSurvey);
 
                                 JSONObject filedS = new JSONObject(qq);
-                                Log.d("*****model ",qq);
+                                Log.d("*****modeliii ",filedS.toString());
 
 
 

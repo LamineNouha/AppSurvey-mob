@@ -74,7 +74,7 @@ public class SurveyActivity extends ActionBarActivity implements
 
         Bundle extras = getIntent().getExtras();
         survey = extras.getParcelable("survey");
-        Log.d("ssssssurveyy ",survey.getTitle());
+        //Log.d("surveyidddd ",survey.getQuestions()[0].getSurvey());
         q =survey.getQuestions();
         Log.d("recovering the intent", q[0].getContent());
         mWizardModel = new QuestionWizardModel(this);

@@ -91,6 +91,7 @@ public class LoginActivity extends BaseActivity implements Button.OnClickListene
                     JSONObject jsonObject1 = new JSONObject(jsonObject.getString("personal"));
                     String email = jsonObject1.getString("email");
                     String personalUser = jsonObject1.getString("user");
+                    String personal = jsonObject1.getString("_id");
 
 
                     Utils.saveToken(LoginActivity.this, token);
@@ -107,7 +108,7 @@ public class LoginActivity extends BaseActivity implements Button.OnClickListene
                     editor.putString(Config.EMAIL_SHARED_PREF, email );
 
                     editor.putString(Config.PERSONAL_USER_SHARED_PREF, personalUser );
-
+                    editor.putString(Config.PERSONAL_SHARED_PREF, personal );
                     //Saving values to editor
                     editor.commit();
 

@@ -24,10 +24,14 @@ public class Config {
     //This would be used to store the user  of the current logged in personal
     public static final String PERSONAL_USER_SHARED_PREF = "personalUser";
 
+    //This would be used to store the id of the current logged in personal
+    public static final String PERSONAL_SHARED_PREF = "personal";
+
     //We will use this to store the boolean in sharedpreference to track user is loggedin or not
     public static final String LOGGEDIN_SHARED_PREF = "loggedin";
 
     public static final String CITIZEN_SHARED_PREF ="";
+    public static final String SURVEY_ID_SHARED_PREF ="";
 
     public static final int D_PREF=0;
 

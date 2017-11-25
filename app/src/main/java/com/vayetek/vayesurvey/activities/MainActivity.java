@@ -110,6 +110,7 @@ public class MainActivity extends BaseActivity {
                 ArrayList<Survey> surveys = new ArrayList<Survey>();
 
                 surveys = response.body();
+
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("surveylist", surveys);
 
