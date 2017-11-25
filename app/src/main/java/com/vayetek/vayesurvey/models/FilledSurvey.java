@@ -18,12 +18,12 @@ public class FilledSurvey extends Survey {
         this.citizen = citizen;
     }
 
-    public FilledSurvey(Survey survey, String citizen, String personal) {
+    public FilledSurvey(Survey survey, String personal) {
         this.setId(survey.getId());
         this.setTitle(survey.getTitle());
         this.setQuestions(survey.getQuestions());
         this.setUser(survey.getUser());
-        this.citizen = citizen;
+        //this.citizen = citizen;
         this.originalSurveyId = survey.getId();
         this.personal = personal;
 

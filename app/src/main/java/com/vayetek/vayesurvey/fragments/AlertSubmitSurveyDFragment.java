@@ -49,7 +49,7 @@ import retrofit2.Callback;
 public class AlertSubmitSurveyDFragment extends DialogFragment {
 
     SurveyApiRetrofitServices surveyApiRetrofitServices;
-    Citizen citizen;
+   // Citizen citizen;
     LinkedHashMap<String, String> tempQuests;
     Survey survey;
     String personalId;
@@ -66,13 +66,13 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
         AlertSubmitSurveyDFragment.thisfragActivity = thisfragActivity;
     }
 
-    public Citizen getCitizen() {
+    /*public Citizen getCitizen() {
         return citizen;
     }
 
     public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
-    }
+    }*/
 
     public Survey getSurvey() {
         return survey;
@@ -117,9 +117,9 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
 
                         Gson json = new Gson();
-                        String citizenJson = json.toJson(citizen);
+                      //  String citizenJson = json.toJson(citizen);
                         Log.d("survey non filled: ", json.toJson(survey));
-                        Log.d("citizen filled", citizenJson);
+                       // Log.d("citizen filled", citizenJson);
                         storeCitizen();
 
                         String questionsJson = json.toJson(tempQuests);
@@ -143,27 +143,14 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
     public void storeCitizen() {
 
-        Call<ResponseBody> call1 = surveyApiRetrofitServices.storeCitizen(Utils.getAuthorization(getActivity()), citizen.getSex(), citizen.getAge(), citizen.getSocLevel(), citizen.getEducLevel(), citizen.getProfession(), citizen.getRegion(), citizen.getLocality());
+        //Call<ResponseBody> call1 = surveyApiRetrofitServices.storeCitizen(Utils.getAuthorization(getActivity()), citizen.getSex(), citizen.getAge(), citizen.getSocLevel(), citizen.getEducLevel(), citizen.getProfession(), citizen.getRegion(), citizen.getLocality());
 
 
-        call1.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call1, retrofit2.Response<ResponseBody> response1) {
 
 
-                if (response1.isSuccessful()) {
-                    Log.d("saving citizen success ", "");
-                    // Intent intent = new Intent(getActivity(), MainActivity.class);
-                    //startActivity(intent);
-
-                    try {
-                        JSONObject jsonObject = new JSONObject(response1.body().string());
-                        String id = jsonObject.getString("_id");
-
-                        //still non filled survey
 
 
-                        Log.d("***** string citizen ", id);
+
 
                         ////this is for storing survey questions
 
@@ -229,7 +216,7 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
                         //String id = AlertSubmitSurveyDFragment.getCitizen_id();
 
-                        filledSurvey = new FilledSurvey(survey, id, personalId);
+                        filledSurvey = new FilledSurvey(survey, personalId);
 
                                 /*Log.d("zzz ",surveyId);
                                 Log.d("zz ",personalId);*/
@@ -238,8 +225,13 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                         Gson json1 = new Gson();
                         String qq = json1.toJson(filledSurvey);
 
-                        JSONObject filedS = new JSONObject(qq);
-                        Log.d("*****modeliii ", filedS.toString());
+        JSONObject filedS = null;
+        try {
+            filedS = new JSONObject(qq);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("*****modeliii ", filedS.toString());
 
 
                         Call<ResponseBody> call2 = surveyApiRetrofitServices.storeSurvey(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), filedS);
@@ -263,20 +255,10 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                         });
 
 
-                    } catch (JSONException | IOException | NullPointerException e1) {
 
-                        e1.printStackTrace();
-                    }
-                }
 
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call1, Throwable t1) {
 
-                Log.d("saving citizen error: ", "", t1);
-            }
-        });
 
 
     }

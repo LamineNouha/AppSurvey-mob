@@ -64,12 +64,14 @@ public class QuestionWizardModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
 
-        CustomerInfoPage citizPage = (CustomerInfoPage) new CustomerInfoPage(this, "Citizen Information").setRequired(true);
+        //CustomerInfoPage citizPage = (CustomerInfoPage) new CustomerInfoPage(this, "Citizen Information").setRequired(true);
 
         //get citizen data from CustomerInfoPage in order to get it from SurveyActivity
-        this.citizen = citizPage.getCitizen();
+       // this.citizen = citizPage.getCitizen();
 
-        PageList p= new PageList(citizPage);
+        //PageList p= new PageList(citizPage);
+       // MultipleFixedChoicePage question0 = new MultipleFixedChoicePage(this, SurveyActivity.q[0].getContent()+"?");
+        PageList p= new PageList();
 
         //creating pages of questions responses
 

@@ -47,7 +47,7 @@ import java.util.List;
 public class SurveyActivity extends ActionBarActivity implements
         PageFragmentCallbacks, ReviewFragment.Callbacks, ModelCallbacks {
     Survey survey;
-    Citizen citizen;
+   // Citizen citizen;
     LinkedHashMap<String,String> tempQuests;
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
@@ -70,7 +70,7 @@ public class SurveyActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
 
-        citizen = new Citizen();
+        //citizen = new Citizen();
         tempQuests = new LinkedHashMap<>();
 
         Bundle extras = getIntent().getExtras();
@@ -132,14 +132,14 @@ public class SurveyActivity extends ActionBarActivity implements
 
                     //in order to save citizen
                     //getting the citizenPage
-                    CustomerInfoPage cf = (CustomerInfoPage)mCurrentPageSequence.get(0);
+//                    CustomerInfoPage cf = (CustomerInfoPage)mCurrentPageSequence.get(0);
 
-                    citizen = cf.getCitizen();
+                    //citizen = cf.getCitizen();
 
                     //just for logging
                     Gson json = new Gson();
-                    String citizenJson = json.toJson(citizen);
-                    Log.d("citizen from surveyAct",citizenJson);
+                    //String citizenJson = json.toJson(citizen);
+                    //Log.d("citizen from surveyAct",citizenJson);
                     //just for logging
 
                     //in order to save questions responses
@@ -155,7 +155,7 @@ public class SurveyActivity extends ActionBarActivity implements
 
                     AlertSubmitSurveyDFragment alertdFragment = new AlertSubmitSurveyDFragment();
                     alertdFragment.setSurvey(survey);
-                    alertdFragment.setCitizen(citizen);
+                    //alertdFragment.setCitizen(citizen);
                     alertdFragment.setTempQuests(tempQuests);
                     // Show Alert DialogFragment
                     alertdFragment.show(getSupportFragmentManager(), "");
