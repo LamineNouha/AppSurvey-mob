@@ -10,8 +10,6 @@ public class FilledSurvey extends Survey {
     private String personal;
 
 
-
-
     public String getCitizen() {
         return citizen;
     }
@@ -20,13 +18,13 @@ public class FilledSurvey extends Survey {
         this.citizen = citizen;
     }
 
-    public FilledSurvey(Survey survey, String citizen, String originalSurveyId, String personal) {
+    public FilledSurvey(Survey survey, String citizen, String personal) {
         this.setId(survey.getId());
         this.setTitle(survey.getTitle());
         this.setQuestions(survey.getQuestions());
         this.setUser(survey.getUser());
         this.citizen = citizen;
-        this.originalSurveyId = originalSurveyId;
+        this.originalSurveyId = survey.getId();
         this.personal = personal;
 
     }

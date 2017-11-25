@@ -49,8 +49,9 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
     SurveyApiRetrofitServices surveyApiRetrofitServices;
     Citizen citizen;
-    HashMap<String,String> tempQuests;
+    HashMap<String, String> tempQuests;
     Survey survey;
+    String personalId;
     FilledSurvey filledSurvey;
     public static FragmentActivity thisfragActivity;
     //this is index for question in survey questions tab
@@ -94,6 +95,12 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
         questIdArrayList = new ArrayList<>();
         thisfragActivity = getActivity();
         surveyApiRetrofitServices = Utils.getSurveyApiRetrofitServicesInstance();
+        //In onresume fetching value from sharedpreference
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+        personalId = sharedPreferences.getString(Config.PERSONAL_SHARED_PREF, "");
+
+
         return new AlertDialog.Builder(getActivity())
                 // Set Dialog Icon
                 .setIcon(R.drawable.goodjob)
@@ -108,15 +115,14 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
                         // Do something else
 
 
-
                         Gson json = new Gson();
                         String citizenJson = json.toJson(citizen);
-                        Log.d("survey non filled: ",json.toJson(survey));
-                        Log.d("citizen filled",citizenJson);
+                        Log.d("survey non filled: ", json.toJson(survey));
+                        Log.d("citizen filled", citizenJson);
                         storeCitizen();
 
                         String questionsJson = json.toJson(tempQuests);
-                        Log.d("questions filled",questionsJson);
+                        Log.d("questions filled", questionsJson);
 
                         //destroying the static tampon hashmap of questions-responses
                         MultipleFixedChoicePage.setTempQuests(new HashMap<String, String>());
@@ -128,15 +134,15 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
 
                 // Negative Button
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,	int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         // Do something else
                     }
                 }).create();
     }
 
-    public void storeCitizen(){
+    public void storeCitizen() {
 
-        Call<ResponseBody> call1 = surveyApiRetrofitServices.storeCitizen(Utils.getAuthorization(getActivity()),citizen.getSex(), citizen.getAge(), citizen.getSocLevel(),citizen.getEducLevel(),citizen.getProfession(),citizen.getRegion(),citizen.getLocality());
+        Call<ResponseBody> call1 = surveyApiRetrofitServices.storeCitizen(Utils.getAuthorization(getActivity()), citizen.getSex(), citizen.getAge(), citizen.getSocLevel(), citizen.getEducLevel(), citizen.getProfession(), citizen.getRegion(), citizen.getLocality());
 
 
         call1.enqueue(new Callback<ResponseBody>() {
@@ -144,149 +150,131 @@ public class AlertSubmitSurveyDFragment extends DialogFragment {
             public void onResponse(Call<ResponseBody> call1, retrofit2.Response<ResponseBody> response1) {
 
 
-                        if(response1.isSuccessful()) {
-                            Log.d("saving citizen success ","");
-                           // Intent intent = new Intent(getActivity(), MainActivity.class);
-                            //startActivity(intent);
+                if (response1.isSuccessful()) {
+                    Log.d("saving citizen success ", "");
+                    // Intent intent = new Intent(getActivity(), MainActivity.class);
+                    //startActivity(intent);
 
-                            try {
-                                JSONObject jsonObject = new JSONObject(response1.body().string());
-                                String id = jsonObject.getString("_id");
+                    try {
+                        JSONObject jsonObject = new JSONObject(response1.body().string());
+                        String id = jsonObject.getString("_id");
 
-                                //still non filled survey
-
-
-                                Log.d("***** string citizen ",id);
-
-                                ////this is for storing survey questions
-
-                                Iterator iterator = tempQuests.entrySet().iterator();
-                                //Log.d("temppppp ",tempQuests.toString());
-                                Question[] questions =survey.getQuestions();
-
-                                for(int i = questions.length-1; i>= 0; i--){
-                                    Map.Entry mapentry = (Map.Entry) iterator.next();
+                        //still non filled survey
 
 
-                                    String t = (String) mapentry.getKey();
+                        Log.d("***** string citizen ", id);
 
-                                    String[] ques_interog = t.split("\\?");
+                        ////this is for storing survey questions
 
-                                    String tiltle= ques_interog[0];
+                        Iterator iterator = tempQuests.entrySet().iterator();
+                        //Log.d("temppppp ",tempQuests.toString());
+                        Question[] questions = survey.getQuestions();
 
-                                    String r = (String) mapentry.getValue();
-                                    String[] responsestmp;
-                                    if(r.contains(",")) {
-                                         responsestmp = r.split(",");
-                                        for (int k = 0; k < responsestmp.length; k++) {
-                                            responsestmp[k] = responsestmp[k].replaceAll("\\s+", "");
-
-                                        }}else {
-                                        responsestmp= new String[1];
-                                        responsestmp[0]=r;
-                                    }
+                        for (int i = questions.length - 1; i >= 0; i--) {
+                            Map.Entry mapentry = (Map.Entry) iterator.next();
 
 
-                                    com.vayetek.vayesurvey.models.Response[] responses = questions[i].getResponses();
+                            String t = (String) mapentry.getKey();
+
+                            String[] ques_interog = t.split("\\?");
+
+                            String tiltle = ques_interog[0];
+
+                            String r = (String) mapentry.getValue();
+                            String[] responsestmp;
+                            if (r.contains(",")) {
+                                responsestmp = r.split(",");
+                                for (int k = 0; k < responsestmp.length; k++) {
+                                    responsestmp[k] = responsestmp[k].replaceAll("\\s+", "");
+
+                                }
+                            } else {
+                                responsestmp = new String[1];
+                                responsestmp[0] = r;
+                            }
 
 
-                                    boolean b=(questions[i].getContent().equals(tiltle));
-
-                                    Log.d("s1",questions[i].getContent());
-                                    Log.d("s1t",tiltle);
+                            com.vayetek.vayesurvey.models.Response[] responses = questions[i].getResponses();
 
 
+                            boolean b = (questions[i].getContent().equals(tiltle));
 
-                                        if(b )
+                            Log.d("s1", questions[i].getContent());
+                            Log.d("s1t", tiltle);
 
-                                        {
-                                            for(int p=0; p<responses.length; p++)
-                                            {
-                                                for(int o=0; o<responsestmp.length;o++)
-                                                {
-                                                    if(responses[p].getChoice().equals(responsestmp[o]))
-                                                    { Log.d("trueeeee","vrai");
-                                                        responses[p].setChecked(true);
-                                                    }
-                                                }
 
-                                            }
+                            if (b)
 
-                                            questions[i].setResponses(responses);
-
+                            {
+                                for (int p = 0; p < responses.length; p++) {
+                                    for (int o = 0; o < responsestmp.length; o++) {
+                                        if (responses[p].getChoice().equals(responsestmp[o])) {
+                                            Log.d("trueeeee", "vrai");
+                                            responses[p].setChecked(true);
                                         }
-
-
-
-
+                                    }
 
                                 }
 
-                                survey.setQuestions(questions);
+                                questions[i].setResponses(responses);
 
-                                //String id = AlertSubmitSurveyDFragment.getCitizen_id();
-                                //In onresume fetching value from sharedpreference
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                                //Fetching the boolean value form sharedpreferences
-                                String surveyId =  sharedPreferences.getString(Config.SURVEY_ID_SHARED_PREF,"");
-                                String personalId = sharedPreferences.getString(Config.PERSONAL_SHARED_PREF,"");
-
-                                filledSurvey = new FilledSurvey(survey,id,surveyId,personalId);
-
-                                Log.d("zzz ",surveyId);
-                                Log.d("zz ",personalId);
-                                JsonParser parser = new JsonParser();
-
-
-
-                                Gson json1 = new Gson();
-                                String qq = json1.toJson(filledSurvey);
-
-                                JSONObject filedS = new JSONObject(qq);
-                                Log.d("*****modeliii ",filedS.toString());
-
-
-
-                                Call<ResponseBody> call2 = surveyApiRetrofitServices.storeSurvey(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), filedS);
-
-
-                                call2.enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseBody> call2, retrofit2.Response<ResponseBody> response2) {
-
-
-
-                                    }
-
-                                        ////this is for storing survey questions
-
-
-
-                                    @Override
-                                    public void onFailure(Call<ResponseBody> call2, Throwable t2) {
-
-                                        Log.d("saving survey error: ","",t2);
-                                    }
-                                });
-
-
-
-                            } catch (JSONException | IOException | NullPointerException e1) {
-
-                                e1.printStackTrace();
                             }
+
+
                         }
+
+                        survey.setQuestions(questions);
+
+                        //String id = AlertSubmitSurveyDFragment.getCitizen_id();
+
+                        filledSurvey = new FilledSurvey(survey, id, personalId);
+
+                                /*Log.d("zzz ",surveyId);
+                                Log.d("zz ",personalId);*/
+
+
+                        Gson json1 = new Gson();
+                        String qq = json1.toJson(filledSurvey);
+
+                        JSONObject filedS = new JSONObject(qq);
+                        Log.d("*****modeliii ", filedS.toString());
+
+
+                        Call<ResponseBody> call2 = surveyApiRetrofitServices.storeSurvey(Utils.getAuthorization(AlertSubmitSurveyDFragment.getThisfragActivity()), filedS);
+
+
+                        call2.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call2, retrofit2.Response<ResponseBody> response2) {
+
+
+                            }
+
+                            ////this is for storing survey questions
+
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call2, Throwable t2) {
+
+                                Log.d("saving survey error: ", "", t2);
+                            }
+                        });
+
+
+                    } catch (JSONException | IOException | NullPointerException e1) {
+
+                        e1.printStackTrace();
+                    }
+                }
 
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call1, Throwable t1) {
 
-                Log.d("saving citizen error: ","",t1);
+                Log.d("saving citizen error: ", "", t1);
             }
         });
-
 
 
     }
