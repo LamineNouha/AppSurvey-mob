@@ -41,7 +41,7 @@ public class CustomerInfoFragment extends Fragment {
     Spinner mSocLevView;
     Spinner mEducLevView;
     private TextView mProfessionView;
-    private TextView mRegionView;
+    private Spinner mRegionView;
     private TextView mLocalityView;
     /* private static Citizen citizen;
 
@@ -95,8 +95,17 @@ public class CustomerInfoFragment extends Fragment {
         mProfessionView = ((TextView) rootView.findViewById(R.id.et_profession));
         mProfessionView.setText(mPage.getData().getString(CustomerInfoPage.PROFESSION_DATA_KEY));
 
-        mRegionView = ((TextView) rootView.findViewById(R.id.et_region));
-        mRegionView.setText(mPage.getData().getString(CustomerInfoPage.REGION_DATA_KEY));
+
+
+                //educ_level spiner init
+        mRegionView = (Spinner) rootView.findViewById(R.id.region);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this.getContext(),R.array.region_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        mRegionView.setAdapter(adapter2);
+
 
         mLocalityView = ((TextView) rootView.findViewById(R.id.et_locality));
         mLocalityView.setText(mPage.getData().getString(CustomerInfoPage.LOCALITY_DATA_KEY));
@@ -256,24 +265,24 @@ public class CustomerInfoFragment extends Fragment {
 
         //region attribute setting data
 
-        mRegionView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1,
-                                          int i2) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
 
+        mRegionView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mPage.getData().putString(CustomerInfoPage.REGION_DATA_KEY,
-                        (editable != null) ? editable.toString() : null);
-                //citizen.setRegion(editable.toString());
+                        (parent.getItemAtPosition(position) != null) ? parent.getItemAtPosition(position).toString() : null);
+                //citizen.setEducLevel(parent.getItemAtPosition(position).toString());
                 mPage.notifyDataChanged();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Another interface callback
             }
         });
+
 
         //locality attribute setting data
 

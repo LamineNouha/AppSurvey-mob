@@ -100,6 +100,7 @@ public class MainActivity extends BaseActivity {
 
                 surveys = response.body();
                 Log.d("surveys", surveys.toString());
+
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("surveylist", surveys);
 

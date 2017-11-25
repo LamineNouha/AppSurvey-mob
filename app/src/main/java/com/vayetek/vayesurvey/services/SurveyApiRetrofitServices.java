@@ -21,6 +21,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -48,25 +49,7 @@ public interface SurveyApiRetrofitServices {
                                      @Field("sex") String sex,@Field("age") int age , @Field("socLevel") String socLev,@Field("educLevel") String educLevel,
                                         @Field("profession") String profession,@Field("region") String region,@Field("locality") String locality);
 
-
-
-      /*  @FormUrlEncoded
-        @POST("filledsurveys")
-        Call<ResponseBody> storeSurvey(@Header("Authorization") String authorization, @Field("title")String title, @Field("user") String user, @Field("citizen") String citizen);
-
-
-        @FormUrlEncoded
-        @POST("filledsurveyques")
-        Call<ResponseBody> storeQuestion(@Header("Authorization") String authorization, @Field("content")String content, @Field("survey")String survey);
-
-
-        @FormUrlEncoded
-        @POST("responses")
-        Call<ResponseBody> storeResponse(@Header("Authorization") String authorization, @Field("choice")String choice, @Field("checked")boolean checked, @Field("question")String question);
-
-*/
-
-
+        //@Headers({"Content-Type: application/json", "Cache-Control: max-age=640000"})
         @POST("filledsurveys")
         Call<ResponseBody> storeSurvey(@Header("Authorization") String authorization, @Body JSONObject body);
 
